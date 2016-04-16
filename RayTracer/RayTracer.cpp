@@ -50,16 +50,7 @@ Color illuminate(Ray r, int depth){
 	int mincount = 99999;
 	vector<double> inter;
 	Color finalTemp;
-	/*vector<Object*>ray_objects = tree->traverse(tree, r);
-	for (int count = 0; count < ray_objects.size(); count++){
-		inter.push_back(ray_objects[count]->getIntersection(r));
-	}
-	for (int count = 0; count<inter.size(); count++){
-		if (inter[count]<mintersection&&inter[count]>0){
-			mintersection = inter[count];
-			mincount = count;
-		}
-	}*/
+
 	for (int i = 0; i < objectCount; i++){
 		intersections[i] = objects[i]->getIntersection(r);
 	}
@@ -236,105 +227,58 @@ int main()
 	lightSources[0] = &pointLight;
 	lightSources[1] = &pointLight1;
 	int phong = 0;
-	//Mesh *mesh[9];
-	//int x_rows = 6;
-	//int z_rows = 6;
-
-	//Mesh *mesh[31][31];
-	//int meshCount = 0;
-
-	//double X = -5;
-	//double xval = 0.5;
-	//double Z = 2.0;
-	//double zval = 0.5;
-
-
-
-	//for (int z = 0; z < z_rows; z++)
-	//{
-	//	X = -5;
-	//	for (int x = 0; x <x_rows; x++)
-	//	{
-	//		mesh[z][x] = new Mesh(X, randGen(), Z);
-	//		X += xval;
-	//	}
-	//	Z += zval;
-	//}
-
-	//int tmp = 0;
-	//int x = 0;
-	//int z = 0;
-
-
-	//while (z < z_rows - 1)
-	//{
-	//	//std::cout << z;
-	//	x = 0;
-	//	while (x < x_rows - 1)
-	//	{
-	//		objects[tmp++] = new Triangle(mesh[z][x]->V, mesh[z][x + 1]->V, mesh[z + 1][x + 1]->V, Color(0.2, 0.3, 1.0), Illumination(0.6, 0.2, 0.6, 0.0, 0.0, Color(0.2, 0.3, 1.0), Color(0.2, 0.3, 1.0)), 1.0);
-	//		objects[tmp++] = new Triangle(mesh[z][x]->V, mesh[z + 1][x + 1]->V, mesh[z + 1][x]->V, Color(0.2, 0.3, 1.0), Illumination(0.6, 0.2, 0.6, 0.0, 0.0, Color(0.2, 0.3, 1.0), Color(0.2, 0.3, 1.0)), 1.0);
-	//		x++;
-	//	}
-	//	z++;
-	//}
-	//for (int frame = 0; frame < 10; frame++){
-		//objects
-		Sphere sphere(Vec(0, 0.03/*-(double)frame/3*/, 1.59), 0.69, Color(0.9, 0.9, 0.9), Illumination(0.1, 0.7, 0.3, 0, 0.7), 1.05);
-		Sphere sphere1(Vec(0.95, -0.33, 3), 1, Color(0.1, 1, 0.1), Illumination(0.1, 0.7, 0.3, 0.7, 0.0), 1.45);
-		Triangle triangle1(Vec(-1.30, -1.2, -0.21), Vec(2.99, -1.2, -0.21), Vec(2.99, -1.2, 9.79), Color(1, 0, 0), Illumination(0.5, 0.7, 0.3, 0.0, 0.0, Color(1, 0, 0), Color(0.94, 0.87, 0.38)), 1.33);
-		Triangle triangle2(Vec(-1.30, -1.2, -0.21), Vec(2.99, -1.2, 9.79), Vec(-1.30, -1.2, 9.79), Color(1, 0, 0), Illumination(0.5, 0.7, 0.3, 0.0, 0.0, Color(1, 0, 0), Color(0.94, 0.87, 0.38)), 1.33);
-		Plane plane(Vec(-1, 0, 0), Vec(4, 4, 5), Color(0, 0, 1), Illumination(0.5, 0.7, 0.3, 0.0, 0.0, Color(1, 0, 0), Color(0.94, 0.87, 0.38)));
+	Sphere sphere(Vec(0, 0.03, 1.59), 0.69, Color(0.9, 0.9, 0.9), Illumination(0.1, 0.7, 0.3, 0, 0.7), 1.05);
+	Sphere sphere1(Vec(0.95, -0.33, 3), 1, Color(0.1, 1, 0.1), Illumination(0.1, 0.7, 0.3, 0.7, 0.0), 1.45);
+	Triangle triangle1(Vec(-1.30, -1.2, -0.21), Vec(2.99, -1.2, -0.21), Vec(2.99, -1.2, 9.79), Color(1, 0, 0), Illumination(0.5, 0.7, 0.3, 0.0, 0.0, Color(1, 0, 0), Color(0.94, 0.87, 0.38)), 1.33);
+	Triangle triangle2(Vec(-1.30, -1.2, -0.21), Vec(2.99, -1.2, 9.79), Vec(-1.30, -1.2, 9.79), Color(1, 0, 0), Illumination(0.5, 0.7, 0.3, 0.0, 0.0, Color(1, 0, 0), Color(0.94, 0.87, 0.38)), 1.33);
+	Plane plane(Vec(-1, 0, 0), Vec(4, 4, 5), Color(0, 0, 1), Illumination(0.5, 0.7, 0.3, 0.0, 0.0, Color(1, 0, 0), Color(0.94, 0.87, 0.38)));
 		
-		objects[0] = &sphere;
-		objects[1] = &sphere1;
-		objects[2] = &triangle1;
-		objects[3] = &triangle2;
-		vector<Object*> obj;
-		obj.push_back(&sphere);
-		obj.push_back(&sphere1);
-		obj.push_back(&triangle1);
-		obj.push_back(&triangle2);
-		//tree->build(obj, 4);// = build(obj, 1);
-		double dx = worldWidth / pixelWidth;
-		double dy = worldHeight / pixelHeight;
-		double d = 1.0;
-		//projection plane
-		Vec planeCenter(camera.getPosition().getX() - CameraN.getX()*d,
-			camera.getPosition().getY() - CameraN.getY()*d,
-			camera.getPosition().getZ() - CameraN.getZ()*d);
-		Vec planeStart(planeCenter.getX() - CameraU.getX()*worldWidth / 2 - CameraV.getX()*worldHeight / 2,
-			planeCenter.getY() - CameraU.getY()*worldWidth / 2 - CameraV.getY()*worldHeight / 2,
-			planeCenter.getZ() - CameraU.getZ()*worldWidth / 2 - CameraV.getZ()*worldHeight / 2);
+	objects[0] = &sphere;
+	objects[1] = &sphere1;
+	objects[2] = &triangle1;
+	objects[3] = &triangle2;
+	vector<Object*> obj;
+	obj.push_back(&sphere);
+	obj.push_back(&sphere1);
+	obj.push_back(&triangle1);
+	obj.push_back(&triangle2);
+	
+	double dx = worldWidth / pixelWidth;
+	double dy = worldHeight / pixelHeight;
+	double d = 1.0;
+	//projection plane
+	Vec planeCenter(camera.getPosition().getX() - CameraN.getX()*d,
+					camera.getPosition().getY() - CameraN.getY()*d,
+					camera.getPosition().getZ() - CameraN.getZ()*d);
+	Vec planeStart(planeCenter.getX() - CameraU.getX()*worldWidth / 2 - CameraV.getX()*worldHeight / 2,
+				planeCenter.getY() - CameraU.getY()*worldWidth / 2 - CameraV.getY()*worldHeight / 2,
+				planeCenter.getZ() - CameraU.getZ()*worldWidth / 2 - CameraV.getZ()*worldHeight / 2);
 
-		for (int i = 0; i < pixelWidth; i++){
-			for (int j = 0; j < pixelHeight; j++){
-				Vec origin = camera.getPosition();
-				Vec planePoint(planeStart.getX() + CameraU.getX()*(i + 0.5)*dx + CameraV.getX()*(j + 0.5)*dy,
-					planeStart.getY() + CameraU.getY()*(i + 0.5)*dx + CameraV.getY()*(j + 0.5)*dy,
-					planeStart.getZ() + CameraU.getZ()*(i + 0.5)*dx + CameraV.getZ()*(j + 0.5)*dy);
-				Vec dir = planePoint.subtract(origin);
-				dir = dir.normalize();
-				Ray r(origin, dir, ni);
-				double intersections[objectCount];
-				vector<double> inter;
-				int mincount = 99999;
-				double mintersection = 99999;
-				if (i == 239 && j == 239){
-					cout << "davai";
-				}
-				thisone = j*pixelWidth + i;
-				insideSphere = false;
-				Color finalTemp = illuminate(r, 0);
-				//Color finalTemp = ray_objects[mincount]->getColor();
-				pixels[thisone].r = finalTemp.getRed();
-				pixels[thisone].g = finalTemp.getGreen();
-				pixels[thisone].b = finalTemp.getBlue();
-			}
+	for (int i = 0; i < pixelWidth; i++){
+		for (int j = 0; j < pixelHeight; j++){
+			Vec origin = camera.getPosition();
+			Vec planePoint(planeStart.getX() + CameraU.getX()*(i + 0.5)*dx + CameraV.getX()*(j + 0.5)*dy,
+						planeStart.getY() + CameraU.getY()*(i + 0.5)*dx + CameraV.getY()*(j + 0.5)*dy,
+						planeStart.getZ() + CameraU.getZ()*(i + 0.5)*dx + CameraV.getZ()*(j + 0.5)*dy);
+			Vec dir = planePoint.subtract(origin);
+			dir = dir.normalize();
+			Ray r(origin, dir, ni);
+			double intersections[objectCount];
+			vector<double> inter;
+			int mincount = 99999;
+			double mintersection = 99999;
+
+			thisone = j*pixelWidth + i;
+			insideSphere = false;
+
+			Color finalTemp = illuminate(r, 0);
+			pixels[thisone].r = finalTemp.getRed();
+			pixels[thisone].g = finalTemp.getGreen();
+			pixels[thisone].b = finalTemp.getBlue();
 		}
-		createBMP(/*("output"+to_string(frame)+".bmp").c_str()*/"Output.bmp", pixelWidth, pixelHeight, dpi, pixels);
-		ifstream file;
-		file.open("Output.bmp");
-	//}
-    return 0;
+	}
+	createBMP("Output.bmp", pixelWidth, pixelHeight, dpi, pixels);
+	ifstream file;
+	file.open("Output.bmp");
+	return 0;
 }
