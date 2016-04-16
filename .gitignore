@@ -234,7 +234,3 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
-
-# Binary changes on run
-.idb
-.sdf
