@@ -82,6 +82,7 @@
     <ClInclude Include="sphere.h" />
     <ClInclude Include="triangle.h" />
     <ClInclude Include="vector.h" />
+    <ClInclude Include="viewing_plane.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RayTracer.cpp" />

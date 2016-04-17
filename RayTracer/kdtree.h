@@ -4,6 +4,7 @@
 #include "vector.h"
 #include "object.h"
 #include "BoundingBox.h"
+#include "plane.h"
 
 class kdtree{
 public:

@@ -3,7 +3,6 @@
 #include <sstream>
 #include <vector>
 #include <string>
-#include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -15,7 +14,6 @@ using namespace std;
 #include "object.h"
 #include "color.h"
 #include "ray.h"
-#include "vector.h"
 #include "triangle.h"
 #include "light.h"
 #include "illumination.h"
@@ -24,6 +22,7 @@ using namespace std;
 #include "Mesh.h"
 #include "ImageGeneration.h"
 #include "lightBehavior.h"
+#include "viewing_plane.h"
 
 //reflection and transmission depth
 const int MAX_DEPTH = 8;
@@ -221,21 +220,15 @@ int main()
 	double d = 1.0;
 
 	//projection plane
+	ViewingPlane view(camera, d, worldWidth, worldHeight);
 	Vec planeCenter(camera.getPosition().getX() - camera.getCameraN().getX()*d,
-					camera.getPosition().getY() - camera.getCameraN().getY()*d,
-					camera.getPosition().getZ() - camera.getCameraN().getZ()*d);
-	Vec planeStart(planeCenter.getX() - camera.getCameraU().getX()*worldWidth / 2 - camera.getCameraV().getX()*worldHeight / 2,
-				planeCenter.getY() - camera.getCameraU().getY()*worldWidth / 2 - camera.getCameraV().getY()*worldHeight / 2,
-				planeCenter.getZ() - camera.getCameraU().getZ()*worldWidth / 2 - camera.getCameraV().getZ()*worldHeight / 2);
+		camera.getPosition().getY() - camera.getCameraN().getY()*d,
+		camera.getPosition().getZ() - camera.getCameraN().getZ()*d);
 
 	for (int i = 0; i < pixelWidth; i++){
 		for (int j = 0; j < pixelHeight; j++){
 			Vec origin = camera.getPosition();
-			Vec planePoint(planeStart.getX() + camera.getCameraU().getX()*(i + 0.5)*dx + camera.getCameraV().getX()*(j + 0.5)*dy,
-						planeStart.getY() + camera.getCameraU().getY()*(i + 0.5)*dx + camera.getCameraV().getY()*(j + 0.5)*dy,
-						planeStart.getZ() + camera.getCameraU().getZ()*(i + 0.5)*dx + camera.getCameraV().getZ()*(j + 0.5)*dy);
-			Vec dir = planePoint.subtract(origin);
-			dir = dir.normalize();
+			Vec dir = view.getPlanePoint(camera,i,j,dx,dy).subtract(origin).normalize();
 			Ray r(origin, dir, ni);
 
 			thisone = j*pixelWidth + i;
