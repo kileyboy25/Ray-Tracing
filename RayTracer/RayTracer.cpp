@@ -34,7 +34,7 @@ const int objectCount = 4;
 
 //light sources
 int lightsources = 1;
-Light *lightSources[2];
+Light *lightSources[2] = { new Light(Vec(-3, 4, -5), Color(1, 1, 1)), new Light(Vec(0, 3, 0), Color(1, 1, 1)) };
 double La = 1;
 
 //refractive index of air
@@ -187,18 +187,6 @@ Color illuminate(Ray r, int depth){
 	return finalTemp;
 }
 
-double randGen()
-{
-	double hi = 1.0;
-	double lo = -1.0;
-	double randNum = 0.0;
-
-	randNum = (double)rand() / (double)RAND_MAX;
-	return lo + randNum * (hi - lo);
-
-	return randNum;
-}
-
 int main()
 {
     int thisone;
@@ -209,24 +197,14 @@ int main()
     double worldWidth = 2;
     double worldHeight = worldWidth/aspect;
 
-    Vec up(0,1,0);
     int n = pixelHeight*pixelWidth;
 
-    Camera camera(Vec(0,0,-1),Vec(0,0,1));
-    Vec CameraN = camera.getPosition().subtract(camera.getLookat());
-    CameraN = CameraN.normalize();
-    Vec CameraU = CameraN.crossProduct(up);
-    CameraU = CameraU.normalize();
-    Vec CameraV = CameraU.crossProduct(CameraN);
-    CameraV = CameraV.normalize();
+	//Camera
+    Camera camera(Vec(0,0,-1),Vec(0,0,1),Vec(0,1,0));
+    
     RGB *pixels = new RGB[n];
 
-	//light
-	Light pointLight(Vec(-3, 4, -5), Color(1, 1, 1));
-	Light pointLight1(Vec(0, 3, 0), Color(1, 1, 1));
-	lightSources[0] = &pointLight;
-	lightSources[1] = &pointLight1;
-	int phong = 0;
+	//Objects
 	Sphere sphere(Vec(0, 0.03, 1.59), 0.69, Color(0.9, 0.9, 0.9), Illumination(0.1, 0.7, 0.3, 0, 0.7), 1.05);
 	Sphere sphere1(Vec(0.95, -0.33, 3), 1, Color(0.1, 1, 0.1), Illumination(0.1, 0.7, 0.3, 0.7, 0.0), 1.45);
 	Triangle triangle1(Vec(-1.30, -1.2, -0.21), Vec(2.99, -1.2, -0.21), Vec(2.99, -1.2, 9.79), Color(1, 0, 0), Illumination(0.5, 0.7, 0.3, 0.0, 0.0, Color(1, 0, 0), Color(0.94, 0.87, 0.38)), 1.33);
@@ -237,36 +215,28 @@ int main()
 	objects[1] = &sphere1;
 	objects[2] = &triangle1;
 	objects[3] = &triangle2;
-	vector<Object*> obj;
-	obj.push_back(&sphere);
-	obj.push_back(&sphere1);
-	obj.push_back(&triangle1);
-	obj.push_back(&triangle2);
 	
 	double dx = worldWidth / pixelWidth;
 	double dy = worldHeight / pixelHeight;
 	double d = 1.0;
+
 	//projection plane
-	Vec planeCenter(camera.getPosition().getX() - CameraN.getX()*d,
-					camera.getPosition().getY() - CameraN.getY()*d,
-					camera.getPosition().getZ() - CameraN.getZ()*d);
-	Vec planeStart(planeCenter.getX() - CameraU.getX()*worldWidth / 2 - CameraV.getX()*worldHeight / 2,
-				planeCenter.getY() - CameraU.getY()*worldWidth / 2 - CameraV.getY()*worldHeight / 2,
-				planeCenter.getZ() - CameraU.getZ()*worldWidth / 2 - CameraV.getZ()*worldHeight / 2);
+	Vec planeCenter(camera.getPosition().getX() - camera.getCameraN().getX()*d,
+					camera.getPosition().getY() - camera.getCameraN().getY()*d,
+					camera.getPosition().getZ() - camera.getCameraN().getZ()*d);
+	Vec planeStart(planeCenter.getX() - camera.getCameraU().getX()*worldWidth / 2 - camera.getCameraV().getX()*worldHeight / 2,
+				planeCenter.getY() - camera.getCameraU().getY()*worldWidth / 2 - camera.getCameraV().getY()*worldHeight / 2,
+				planeCenter.getZ() - camera.getCameraU().getZ()*worldWidth / 2 - camera.getCameraV().getZ()*worldHeight / 2);
 
 	for (int i = 0; i < pixelWidth; i++){
 		for (int j = 0; j < pixelHeight; j++){
 			Vec origin = camera.getPosition();
-			Vec planePoint(planeStart.getX() + CameraU.getX()*(i + 0.5)*dx + CameraV.getX()*(j + 0.5)*dy,
-						planeStart.getY() + CameraU.getY()*(i + 0.5)*dx + CameraV.getY()*(j + 0.5)*dy,
-						planeStart.getZ() + CameraU.getZ()*(i + 0.5)*dx + CameraV.getZ()*(j + 0.5)*dy);
+			Vec planePoint(planeStart.getX() + camera.getCameraU().getX()*(i + 0.5)*dx + camera.getCameraV().getX()*(j + 0.5)*dy,
+						planeStart.getY() + camera.getCameraU().getY()*(i + 0.5)*dx + camera.getCameraV().getY()*(j + 0.5)*dy,
+						planeStart.getZ() + camera.getCameraU().getZ()*(i + 0.5)*dx + camera.getCameraV().getZ()*(j + 0.5)*dy);
 			Vec dir = planePoint.subtract(origin);
 			dir = dir.normalize();
 			Ray r(origin, dir, ni);
-			double intersections[objectCount];
-			vector<double> inter;
-			int mincount = 99999;
-			double mintersection = 99999;
 
 			thisone = j*pixelWidth + i;
 			insideSphere = false;
@@ -277,6 +247,7 @@ int main()
 			pixels[thisone].b = finalTemp.getBlue();
 		}
 	}
+
 	createBMP("Output.bmp", pixelWidth, pixelHeight, dpi, pixels);
 	ifstream file;
 	file.open("Output.bmp");
