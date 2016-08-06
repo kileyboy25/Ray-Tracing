@@ -221,14 +221,13 @@ int main()
 
 	//projection plane
 	ViewingPlane view(camera, d, worldWidth, worldHeight);
-	Vec planeCenter(camera.getPosition().getX() - camera.getCameraN().getX()*d,
-		camera.getPosition().getY() - camera.getCameraN().getY()*d,
-		camera.getPosition().getZ() - camera.getCameraN().getZ()*d);
+	
 
 	for (int i = 0; i < pixelWidth; i++){
 		for (int j = 0; j < pixelHeight; j++){
 			Vec origin = camera.getPosition();
-			Vec dir = view.getPlanePoint(camera,i,j,dx,dy).subtract(origin).normalize();
+			Vec dir = view.getPlanePoint(camera, i, j, dx, dy).subtract(origin);
+			dir = dir.normalize();
 			Ray r(origin, dir, ni);
 
 			thisone = j*pixelWidth + i;
