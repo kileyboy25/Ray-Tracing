@@ -222,7 +222,6 @@ int main()
 	//projection plane
 	ViewingPlane view(camera, d, worldWidth, worldHeight);
 	
-
 	for (int i = 0; i < pixelWidth; i++){
 		for (int j = 0; j < pixelHeight; j++){
 			Vec origin = camera.getPosition();
