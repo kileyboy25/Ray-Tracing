@@ -11,7 +11,7 @@ struct RGB
 	double b;
 };
 
-void createBMP ( const char *filename, int w, int h, int dpi, RGB *data )
+void createBMP( const char *filename, int w, int h, int dpi, RGB *data )
 {
 	//Tone reproduction
 	int TRmodel = 2;
@@ -68,10 +68,10 @@ void createBMP ( const char *filename, int w, int h, int dpi, RGB *data )
 	bmpinfoheader[31] = (unsigned char) ( ppm >> 16 );
 	bmpinfoheader[32] = (unsigned char) ( ppm >> 24 );
 
-	f = fopen ( filename, "wb" );
+	f = fopen( filename, "wb" );
 
-	fwrite ( bmpfileheader, 1, 14, f );
-	fwrite ( bmpinfoheader, 1, 40, f );
+	fwrite( bmpfileheader, 1, 14, f );
+	fwrite( bmpinfoheader, 1, 40, f );
 	double red;
 	double green;
 	double blue;
@@ -84,11 +84,11 @@ void createBMP ( const char *filename, int w, int h, int dpi, RGB *data )
 
 		double L = 0.27*red + 0.67*green + 0.06*blue;
 
-		Lwa += log ( delta + L );
+		Lwa += log( delta + L );
 	}
-	Lwa = exp ( Lwa / k );
-	double sf = ( 1.219 + pow ( Ldmax / 2, 0.4 ) ) / ( 1.219 + pow ( Lwa, 0.4 ) );
-	sf = pow ( sf, 2.5 );
+	Lwa = exp( Lwa / k );
+	double sf = ( 1.219 + pow( Ldmax / 2, 0.4 ) ) / ( 1.219 + pow( Lwa, 0.4 ) );
+	sf = pow( sf, 2.5 );
 	double Ld = sf / Ldmax;
 	Lwmax = Lmax / Lwa;
 	for ( int i = 0; i < k; i++ )
@@ -109,9 +109,9 @@ void createBMP ( const char *filename, int w, int h, int dpi, RGB *data )
 
 		if ( TRmodel == 2 )
 		{
-			double exponent = log ( b ) / log ( 0.5 );
-			double first = 1 / log10 ( Lwmax + 1 );
-			double second = log ( Lw + 1 ) / log ( 2 + 0.8*( pow ( Lw / Lwmax, exponent ) ) );
+			double exponent = log( b ) / log( 0.5 );
+			double first = 1 / log10( Lwmax + 1 );
+			double second = log( Lw + 1 ) / log( 2 + 0.8*( pow( Lw / Lwmax, exponent ) ) );
 			Ld = first * second;
 		}
 
@@ -164,10 +164,10 @@ void createBMP ( const char *filename, int w, int h, int dpi, RGB *data )
 		blue = (wblue) * 255;
 		green = (wgreen) * 255;
 
-		unsigned char color[3] = { (int) floor ( blue ), (int) floor ( green ), (int) floor ( red ) };
-		fwrite ( color, 1, 3, f );
+		unsigned char color[3] = { (int) floor( blue ), (int) floor( green ), (int) floor( red ) };
+		fwrite( color, 1, 3, f );
 	}
-	fclose ( f );
+	fclose( f );
 }
 
 #endif // !1

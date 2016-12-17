@@ -12,49 +12,49 @@ private:
 	Vec point;
 	Color color;
 public:
-	Plane ();
-	Plane ( Vec, Vec );
-	Plane ( Vec, Vec, Color, Illumination );
-	Vec getPlaneNormal ();
-	Color getColor ();
-	Vec getNormalAt ( Vec );
-	double getIntersection ( Ray );
+	Plane();
+	Plane( Vec, Vec );
+	Plane( Vec, Vec, Color, Illumination );
+	Vec getPlaneNormal();
+	Color getColor();
+	Vec getNormalAt( Vec );
+	double getIntersection( Ray );
 };
 
-Plane::Plane ()
+Plane::Plane()
 {
-	normal = Vec ( 1, 0, 0 );
-	point = Vec ();
-	color = Color ( 0.5, 0.5, 0.5 );
+	normal = Vec( 1, 0, 0 );
+	point = Vec();
+	color = Color( 0.5, 0.5, 0.5 );
 }
 
-Plane::Plane ( Vec normalValue, Vec pointValue )
+Plane::Plane( Vec normalValue, Vec pointValue )
 {
 	normal = normalValue;
 	point = pointValue;
 }
 
-Plane::Plane ( Vec normalValue, Vec pointValue, Color colorValue, Illumination i )
+Plane::Plane( Vec normalValue, Vec pointValue, Color colorValue, Illumination i )
 {
 	normal = normalValue;
 	point = pointValue;
 	color = colorValue;
-	__super::setIllumination ( i );
+	__super::setIllumination( i );
 }
 
-Vec Plane::getPlaneNormal ()
+Vec Plane::getPlaneNormal()
 {
 	return normal;
 }
 
 
-double Plane::getIntersection ( Ray r )
+double Plane::getIntersection( Ray r )
 {
-	Vec ray_direction = r.getDirection ();
+	Vec ray_direction = r.getDirection();
 
-	double a = normal.dotProduct ( r.getDirection () );
-	double distance = -1 * ( normal.getX ()*point.getX () + normal.getY ()*point.getY () + normal.getZ ()*point.getZ () );
-	double omega = -1 * ( normal.getX ()*r.getOrigin ().getX () + normal.getY ()*r.getOrigin ().getY () + normal.getZ ()*r.getOrigin ().getZ () + distance ) / ( normal.getX ()*ray_direction.getX () + normal.getY ()*ray_direction.getY () + normal.getZ ()*ray_direction.getZ () );
+	double a = normal.dotProduct( r.getDirection() );
+	double distance = -1 * ( normal.getX()*point.getX() + normal.getY()*point.getY() + normal.getZ()*point.getZ() );
+	double omega = -1 * ( normal.getX()*r.getOrigin().getX() + normal.getY()*r.getOrigin().getY() + normal.getZ()*r.getOrigin().getZ() + distance ) / ( normal.getX()*ray_direction.getX() + normal.getY()*ray_direction.getY() + normal.getZ()*ray_direction.getZ() );
 
 	if ( omega == 0 )
 	{
@@ -71,12 +71,12 @@ double Plane::getIntersection ( Ray r )
 	}
 }
 
-Vec Plane::getNormalAt ( Vec point )
+Vec Plane::getNormalAt( Vec point )
 {
 	return normal;
 }
 
-Color Plane::getColor ()
+Color Plane::getColor()
 {
 	return color;
 }

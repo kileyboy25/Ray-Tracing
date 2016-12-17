@@ -9,27 +9,27 @@ private:
 	double ka, kd, ks, kr, kt;
 	Color c1, c2;
 public:
-	Illumination ();
-	Illumination ( double, double, double, double, double );
-	Illumination ( double, double, double, double, double, Color, Color );
+	Illumination();
+	Illumination( double, double, double, double, double );
+	Illumination( double, double, double, double, double, Color, Color );
 	// Accessors and Mutators
-	double getka ();
-	double getkd ();
-	double getks ();
-	Color getilea ();
-	Color getileb ();
-	double getkr ();
-	double getkt ();
+	double getka();
+	double getkd();
+	double getks();
+	Color getilea();
+	Color getileb();
+	double getkr();
+	double getkt();
 };
 
-Illumination::Illumination ()
+Illumination::Illumination()
 {
 	ka = 0;
 	ks = 0;
 	kd = 0;
 }
 
-Illumination::Illumination ( double Ka, double Ks, double Kd, double Kr, double Kt )
+Illumination::Illumination( double Ka, double Ks, double Kd, double Kr, double Kt )
 {
 	ka = Ka;
 	ks = Ks;
@@ -38,7 +38,7 @@ Illumination::Illumination ( double Ka, double Ks, double Kd, double Kr, double 
 	kt = Kt;
 }
 
-Illumination::Illumination ( double Ka, double Ks, double Kd, double Kr, double Kt, Color a, Color b )
+Illumination::Illumination( double Ka, double Ks, double Kd, double Kr, double Kt, Color a, Color b )
 {
 	ka = Ka;
 	ks = Ks;
@@ -49,37 +49,37 @@ Illumination::Illumination ( double Ka, double Ks, double Kd, double Kr, double 
 	c2 = b;
 }
 
-Color Illumination::getilea ()
+Color Illumination::getilea()
 {
 	return c1;
 }
 
-Color Illumination::getileb ()
+Color Illumination::getileb()
 {
 	return c2;
 }
 
-double Illumination::getka ()
+double Illumination::getka()
 {
 	return ka;
 }
 
-double Illumination::getks ()
+double Illumination::getks()
 {
 	return ks;
 }
 
-double Illumination::getkd ()
+double Illumination::getkd()
 {
 	return kd;
 }
 
-double Illumination::getkr ()
+double Illumination::getkr()
 {
 	return kr;
 }
 
-double Illumination::getkt ()
+double Illumination::getkt()
 {
 	return kt;
 }

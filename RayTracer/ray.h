@@ -12,37 +12,37 @@ private:
 	Vec direction;
 	double n;
 public:
-	Ray ();
-	Ray ( Vec, Vec, double );
-	Vec getOrigin ();
-	Vec getDirection ();
-	double getRefractive ();
+	Ray();
+	Ray( Vec, Vec, double );
+	Vec getOrigin();
+	Vec getDirection();
+	double getRefractive();
 };
 
-Ray::Ray ()
+Ray::Ray()
 {
-	origin = Vec ();
-	direction = Vec ( 0, 0, 1 );
+	origin = Vec();
+	direction = Vec( 0, 0, 1 );
 }
 
-Ray::Ray ( Vec o, Vec d, double r )
+Ray::Ray( Vec o, Vec d, double r )
 {
 	origin = o;
 	direction = d;
 	n = r;
 }
 
-Vec Ray::getDirection ()
+Vec Ray::getDirection()
 {
 	return direction;
 }
 
-Vec Ray::getOrigin ()
+Vec Ray::getOrigin()
 {
 	return origin;
 }
 
-double Ray::getRefractive ()
+double Ray::getRefractive()
 {
 	return n;
 }

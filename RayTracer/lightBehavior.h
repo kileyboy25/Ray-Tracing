@@ -9,62 +9,62 @@ bool insideSphere = false;
 
 // Spawns a relfective ray from the given Vec POI and the normal
 // at that point.
-Ray reflect ( Ray r, Vec normal, Vec POI )
+Ray reflect( Ray r, Vec normal, Vec POI )
 {
-	double dotRS = 2 * r.getDirection ().dotProduct ( normal );
-	Vec dir = r.getDirection ().subtract ( normal.multiply ( dotRS ) );
-	dir = dir.normalize ();
-	return Ray ( POI, dir, r.getRefractive () );
+	double dotRS = 2 * r.getDirection().dotProduct( normal );
+	Vec dir = r.getDirection().subtract( normal.multiply( dotRS ) );
+	dir = dir.normalize();
+	return Ray( POI, dir, r.getRefractive() );
 }
 
 // Spaws and returns a transmissive ray from the given POI, normal and transmissive properties 
 // of the object
-Ray transmit ( Ray r, Vec normal, double nt, Vec PoI )
+Ray transmit( Ray r, Vec normal, double nt, Vec PoI )
 {
 	double ratio;
 	if ( insideSphere )
 	{
-		ratio = nt / r.getRefractive ();
+		ratio = nt / r.getRefractive();
 	}
 	else
 	{
-		ratio = nt / r.getRefractive ();
+		ratio = nt / r.getRefractive();
 	}
-	normal = normal.normalize ();
-	double dotND = r.getDirection ().multiply ( -1 ).dotProduct ( normal );
-	double dotNi = r.getDirection ().multiply ( -1 ).dotProduct ( normal );
+	normal = normal.normalize();
+	double dotND = r.getDirection().multiply( -1 ).dotProduct( normal );
+	double dotNi = r.getDirection().multiply( -1 ).dotProduct( normal );
 	if ( dotND < 0 )
 	{
 		insideSphere = false;
-		normal = normal.multiply ( -1 );
-		normal.normalize ();
+		normal = normal.multiply( -1 );
+		normal.normalize();
 	}
 	else
 	{
 		insideSphere = true;
 	}
-	dotND = r.getDirection ().multiply ( -1 ).dotProduct ( normal );
-	double pown = pow ( ratio, 2 );
-	double tir = 1 - pown*( 1 - pow ( dotND, 2 ) );
+	dotND = r.getDirection().multiply( -1 ).dotProduct( normal );
+	double pown = pow( ratio, 2 );
+	double tir = 1 - pown*( 1 - pow( dotND, 2 ) );
 	if ( tir < 0 )
 	{
-		double dotRS = 2 * r.getDirection ().dotProduct ( normal );
-		Vec dir = r.getDirection ().subtract ( normal.multiply ( dotRS ) );
-		dir = dir.normalize ();
+		double dotRS = 2 * r.getDirection().dotProduct( normal );
+		Vec dir = r.getDirection().subtract( normal.multiply( dotRS ) );
+		dir = dir.normalize();
 		insideSphere = false;
-		return Ray ( PoI, dir, r.getRefractive () );
+		return Ray( PoI, dir, r.getRefractive() );
 	}
 	else
 	{
-		Vec second = normal.multiply ( ratio*dotND - sqrt ( tir ) );
-		Vec first = r.getDirection ().multiply ( -1 * pown );
-		Vec dir = second.subtract ( first );
-		dir = dir.normalize ();
+		Vec second = normal.multiply( ratio*dotND - sqrt( tir ) );
+		Vec first = r.getDirection().multiply( -1 * pown );
+		Vec dir = second.subtract( first );
+		dir = dir.normalize();
 		if ( dotNi < 0 )
 		{
-			nt = r.getRefractive ();
+			nt = r.getRefractive();
 		}
-		return Ray ( PoI, dir, nt );
+		return Ray( PoI, dir, nt );
 	}
 }
 

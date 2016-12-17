@@ -13,48 +13,48 @@ class Object
 private:
 	Illumination illumination;
 public:
-	Object ();
-	Object ( Illumination );
-	virtual double getIntersection ( Ray r )
+	Object();
+	Object( Illumination );
+	virtual double getIntersection( Ray r )
 	{
 		return 0;
 	}
-	virtual Color getColor ()
+	virtual Color getColor()
 	{
-		return Color ();
+		return Color();
 	}
-	virtual Vec getNormalAt ( Vec v )
+	virtual Vec getNormalAt( Vec v )
 	{
 		return v;
 	}
-	virtual BoundingBox getBbox ()
+	virtual BoundingBox getBbox()
 	{
-		return BoundingBox ();
+		return BoundingBox();
 	}
-	virtual Vec midPoint ()
+	virtual Vec midPoint()
 	{
-		return Vec ();
+		return Vec();
 	}
-	Illumination getIllumination ()
+	Illumination getIllumination()
 	{
 		return illumination;
 	}
-	void setIllumination ( Illumination i )
+	void setIllumination( Illumination i )
 	{
 		illumination = i;
 	}
-	virtual double getRefractive ()
+	virtual double getRefractive()
 	{
 		return 0;
 	}
 };
 
-Object::Object ()
+Object::Object()
 {
-	illumination = Illumination ();
+	illumination = Illumination();
 }
 
-Object::Object ( Illumination i )
+Object::Object( Illumination i )
 {
 	illumination = i;
 }

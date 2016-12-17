@@ -12,31 +12,31 @@ private:
 	Vec position;
 	Color color;
 public:
-	Light ();
-	Light ( Vec, Color );
+	Light();
+	Light( Vec, Color );
 	// Accessors
-	Vec getPosition ();
-	Color getColor ();
+	Vec getPosition();
+	Color getColor();
 };
 
-Light::Light ()
+Light::Light()
 {
-	position = Vec ( 0, 0, 0 );
-	color = Color ( 0, 0, 1 );
+	position = Vec( 0, 0, 0 );
+	color = Color( 0, 0, 1 );
 }
 
-Light::Light ( Vec p, Color c )
+Light::Light( Vec p, Color c )
 {
 	position = p;
 	color = c;
 }
 
-Color Light::getColor ()
+Color Light::getColor()
 {
 	return color;
 }
 
-Vec Light::getPosition ()
+Vec Light::getPosition()
 {
 	return position;
 }

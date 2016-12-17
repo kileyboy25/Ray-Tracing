@@ -33,21 +33,21 @@ const int objectCount = 4;
 
 //light sources
 int lightsources = 1;
-Light *lightSources[2] = { new Light ( Vec ( -3, 4, -5 ), Color ( 1, 1, 1 ) ), new Light ( Vec ( 0, 3, 0 ), Color ( 1, 1, 1 ) ) };
+Light *lightSources[2] = { new Light( Vec( -3, 4, -5 ), Color( 1, 1, 1 ) ), new Light( Vec( 0, 3, 0 ), Color( 1, 1, 1 ) ) };
 double La = 1;
 
 //refractive index of air
 double ni = 1.0;
 
 //tree for traversal
-kdtree* tree = new kdtree ();
+kdtree* tree = new kdtree();
 
 // This method recursively finds the best Color for a given object. At each level of the recursive call,
 // a reflective and a transmissive ray is spawned. The color is decided using phong's model of illumunation.
 // Phong constants are defined in each object as a field in the illumination object.
 // 
 // The MAX_DEPTH is used to prune the tree.
-Color illuminate ( Ray r, int depth )
+Color illuminate( Ray r, int depth )
 {
 	double mintersection = INT_MAX;
 	double intersections[objectCount];
@@ -58,7 +58,7 @@ Color illuminate ( Ray r, int depth )
 
 	for ( int i = 0; i < objectCount; i++ )
 	{
-		intersections[i] = objects[i]->getIntersection ( r );
+		intersections[i] = objects[i]->getIntersection( r );
 	}
 	for ( int count = 0; count < objectCount; count++ )
 	{
@@ -71,12 +71,12 @@ Color illuminate ( Ray r, int depth )
 
 	if ( mincount == INT_MAX )
 	{
-		return Color ( 0.27, 0.54, 0.83 );
+		return Color( 0.27, 0.54, 0.83 );
 	}
 	else
 	{
-		Vec PoI = r.getOrigin ().add ( Vec ( r.getDirection ().getX ()*intersections[mincount], r.getDirection ().getY ()*intersections[mincount]
-			, r.getDirection ().getZ ()*intersections[mincount] ) );
+		Vec PoI = r.getOrigin().add( Vec( r.getDirection().getX()*intersections[mincount], r.getDirection().getY()*intersections[mincount]
+			, r.getDirection().getZ()*intersections[mincount] ) );
 		double specular = 0;
 		double diffuse = 0;
 		double ambient = 0;
@@ -88,19 +88,19 @@ Color illuminate ( Ray r, int depth )
 		for ( int x = 0; x < lightsources; x++ )
 		{
 			double ke = 0;
-			Vec S = lightSources[x]->getPosition ().subtract ( PoI );
-			S = S.normalize ();
-			ke = sqrt ( pow ( lightSources[x]->getPosition ().getX () - PoI.getX (), 2 ) +
-						pow ( lightSources[x]->getPosition ().getY () - PoI.getY (), 2 ) +
-						pow ( lightSources[x]->getPosition ().getZ () - PoI.getZ (), 2 ) );
-			Ray shadow = Ray ( PoI, S, r.getRefractive () );
+			Vec S = lightSources[x]->getPosition().subtract( PoI );
+			S = S.normalize();
+			ke = sqrt( pow( lightSources[x]->getPosition().getX() - PoI.getX(), 2 ) +
+					   pow( lightSources[x]->getPosition().getY() - PoI.getY(), 2 ) +
+					   pow( lightSources[x]->getPosition().getZ() - PoI.getZ(), 2 ) );
+			Ray shadow = Ray( PoI, S, r.getRefractive() );
 			for ( int y = 0; y < objectCount; y++ )
 			{
-				if ( objects[y]->getIntersection ( shadow )>0.0001 )
+				if ( objects[y]->getIntersection( shadow )>0.0001 )
 				{
-					if ( objects[y]->getIllumination ().getkt () > 0.0 )
+					if ( objects[y]->getIllumination().getkt() > 0.0 )
 					{
-						transparent = objects[y]->getIllumination ().getkt ();
+						transparent = objects[y]->getIllumination().getkt();
 						inShadow++;
 					}
 					else
@@ -110,21 +110,21 @@ Color illuminate ( Ray r, int depth )
 					}
 				}
 			}
-			Vec N = objects[mincount]->getNormalAt ( PoI );
-			N = N.normalize ();
-			double dotNS = S.dotProduct ( N );
+			Vec N = objects[mincount]->getNormalAt( PoI );
+			N = N.normalize();
+			double dotNS = S.dotProduct( N );
 			if ( dotNS > 0 )
 			{
 				Vec R;
-				Vec temp = Vec ( 2 * dotNS*N.getX (), 2 * dotNS*N.getY (), 2 * dotNS*N.getZ () );
-				R = S.subtract ( temp );
-				R = R.normalize ();
-				dotRV = R.dotProduct ( r.getDirection () );
+				Vec temp = Vec( 2 * dotNS*N.getX(), 2 * dotNS*N.getY(), 2 * dotNS*N.getZ() );
+				R = S.subtract( temp );
+				R = R.normalize();
+				dotRV = R.dotProduct( r.getDirection() );
 				if ( inShadow == 0 )
 				{
 					if ( !insideSphere )
 					{
-						diffuse += dotNS * objects[mincount]->getIllumination ().getkd ();
+						diffuse += dotNS * objects[mincount]->getIllumination().getkd();
 					}
 				}
 				else
@@ -133,11 +133,11 @@ Color illuminate ( Ray r, int depth )
 					{
 						if ( transparent > 0 )
 						{
-							diffuse += dotNS * objects[mincount]->getIllumination ().getkd ()*transparent / inShadow;
+							diffuse += dotNS * objects[mincount]->getIllumination().getkd()*transparent / inShadow;
 						}
 						else
 						{
-							diffuse += dotNS * objects[mincount]->getIllumination ().getkd () / inShadow;
+							diffuse += dotNS * objects[mincount]->getIllumination().getkd() / inShadow;
 						}
 					}
 				}
@@ -147,7 +147,7 @@ Color illuminate ( Ray r, int depth )
 					{
 						if ( !insideSphere )
 						{
-							specular += pow ( dotRV, ke * 2 ) * objects[mincount]->getIllumination ().getks ();
+							specular += pow( dotRV, ke * 2 ) * objects[mincount]->getIllumination().getks();
 						}
 					}
 					else
@@ -156,25 +156,25 @@ Color illuminate ( Ray r, int depth )
 						{
 							if ( transparent > 0 )
 							{
-								specular += pow ( dotRV, ke * 2 ) * objects[mincount]->getIllumination ().getks ()*transparent / inShadow;
+								specular += pow( dotRV, ke * 2 ) * objects[mincount]->getIllumination().getks()*transparent / inShadow;
 							}
 							else
 							{
-								specular += pow ( dotRV, ke * 2 ) * objects[mincount]->getIllumination ().getks () / inShadow;
+								specular += pow( dotRV, ke * 2 ) * objects[mincount]->getIllumination().getks() / inShadow;
 							}
 						}
 					}
 				}
-				lightRed = lightSources[x]->getColor ().getRed ();
-				lightGreen = lightSources[x]->getColor ().getGreen ();
-				lightBlue = lightSources[x]->getColor ().getBlue ();
+				lightRed = lightSources[x]->getColor().getRed();
+				lightGreen = lightSources[x]->getColor().getGreen();
+				lightBlue = lightSources[x]->getColor().getBlue();
 			}
 		}
 		if ( inShadow == 0 )
 		{
 			if ( !insideSphere )
 			{
-				ambient = objects[mincount]->getIllumination ().getka ()*La;
+				ambient = objects[mincount]->getIllumination().getka()*La;
 			}
 		}
 		else
@@ -183,51 +183,51 @@ Color illuminate ( Ray r, int depth )
 			{
 				if ( transparent > 0 )
 				{
-					ambient = objects[mincount]->getIllumination ().getka ()*La *transparent / inShadow;
+					ambient = objects[mincount]->getIllumination().getka()*La *transparent / inShadow;
 				}
 				else
 				{
-					ambient = objects[mincount]->getIllumination ().getka ()*La*0.5 / inShadow;
+					ambient = objects[mincount]->getIllumination().getka()*La*0.5 / inShadow;
 				}
 			}
 		}
-		finalTemp = Color ( ( ambient + diffuse )*( objects[mincount]->getColor ().getRed () ) + specular*lightRed,
-							( ambient + diffuse )*( objects[mincount]->getColor ().getGreen () ) + specular*lightGreen,
-							( ambient + diffuse )*( objects[mincount]->getColor ().getBlue () ) + specular*lightBlue );
+		finalTemp = Color( ( ambient + diffuse )*( objects[mincount]->getColor().getRed() ) + specular*lightRed,
+						   ( ambient + diffuse )*( objects[mincount]->getColor().getGreen() ) + specular*lightGreen,
+						   ( ambient + diffuse )*( objects[mincount]->getColor().getBlue() ) + specular*lightBlue );
 		if ( mincount > 1 )
 		{
-			int square = ( (int) floor ( PoI.getX () * 3 ) + (int) floor ( PoI.getZ () * 3 ) );
+			int square = ( (int) floor( PoI.getX() * 3 ) + (int) floor( PoI.getZ() * 3 ) );
 			if ( square % 2 == 0 )
 			{
-				finalTemp = Color ( ( ambient + diffuse )*( objects[mincount]->getIllumination ().getilea ().getRed () ) + specular*lightRed,
-									( ambient + diffuse )*( objects[mincount]->getIllumination ().getilea ().getGreen () ) + specular*lightGreen,
-									( ambient + diffuse )*( objects[mincount]->getIllumination ().getilea ().getBlue () ) + specular*lightBlue );
+				finalTemp = Color( ( ambient + diffuse )*( objects[mincount]->getIllumination().getilea().getRed() ) + specular*lightRed,
+								   ( ambient + diffuse )*( objects[mincount]->getIllumination().getilea().getGreen() ) + specular*lightGreen,
+								   ( ambient + diffuse )*( objects[mincount]->getIllumination().getilea().getBlue() ) + specular*lightBlue );
 			}
 			else
 			{
-				finalTemp = Color ( ( ambient + diffuse )*( objects[mincount]->getIllumination ().getileb ().getRed () ) + specular*lightRed,
-									( ambient + diffuse )*( objects[mincount]->getIllumination ().getileb ().getGreen () ) + specular*lightGreen,
-									( ambient + diffuse )*( objects[mincount]->getIllumination ().getileb ().getBlue () ) + specular*lightBlue );
+				finalTemp = Color( ( ambient + diffuse )*( objects[mincount]->getIllumination().getileb().getRed() ) + specular*lightRed,
+								   ( ambient + diffuse )*( objects[mincount]->getIllumination().getileb().getGreen() ) + specular*lightGreen,
+								   ( ambient + diffuse )*( objects[mincount]->getIllumination().getileb().getBlue() ) + specular*lightBlue );
 			}
 		}
 		if ( depth < MAX_DEPTH )
 		{
-			if ( objects[mincount]->getIllumination ().getkr ()>0 )
+			if ( objects[mincount]->getIllumination().getkr()>0 )
 			{
-				Ray reflected = reflect ( r, objects[mincount]->getNormalAt ( PoI ), PoI );
-				finalTemp += illuminate ( reflected, depth + 1 ).product ( objects[mincount]->getIllumination ().getkr () );
+				Ray reflected = reflect( r, objects[mincount]->getNormalAt( PoI ), PoI );
+				finalTemp += illuminate( reflected, depth + 1 ).product( objects[mincount]->getIllumination().getkr() );
 			}
-			if ( objects[mincount]->getIllumination ().getkt () > 0 )
+			if ( objects[mincount]->getIllumination().getkt() > 0 )
 			{
-				Ray refracted = transmit ( r, objects[mincount]->getNormalAt ( PoI ), objects[mincount]->getRefractive (), PoI );
-				finalTemp += illuminate ( refracted, depth + 1 ).product ( objects[mincount]->getIllumination ().getkt () );
+				Ray refracted = transmit( r, objects[mincount]->getNormalAt( PoI ), objects[mincount]->getRefractive(), PoI );
+				finalTemp += illuminate( refracted, depth + 1 ).product( objects[mincount]->getIllumination().getkt() );
 			}
 		}
 	}
 	return finalTemp;
 }
 
-int main ()
+int main()
 {
 	int thisone;
 	int dpi = 72;
@@ -240,16 +240,16 @@ int main ()
 	int n = pixelHeight*pixelWidth;
 
 	//Camera
-	Camera camera ( Vec ( 0, 0, -1 ), Vec ( 0, 0, 1 ), Vec ( 0, 1, 0 ) );
+	Camera camera( Vec( 0, 0, -1 ), Vec( 0, 0, 1 ), Vec( 0, 1, 0 ) );
 
 	RGB *pixels = new RGB[n];
 
 	//Objects
-	Sphere sphere ( Vec ( 0, 0.03, 1.59 ), 0.69, Color ( 0.9, 0.9, 0.9 ), Illumination ( 0.1, 0.7, 0.3, 0, 0.7 ), 1.05 );
-	Sphere sphere1 ( Vec ( 0.95, -0.33, 3 ), 1, Color ( 0.1, 1, 0.1 ), Illumination ( 0.1, 0.7, 0.3, 0.7, 0.0 ), 1.45 );
-	Triangle triangle1 ( Vec ( -1.30, -1.2, -0.21 ), Vec ( 2.99, -1.2, -0.21 ), Vec ( 2.99, -1.2, 9.79 ), Color ( 1, 0, 0 ), Illumination ( 0.5, 0.7, 0.3, 0.0, 0.0, Color ( 1, 0, 0 ), Color ( 0.94, 0.87, 0.38 ) ), 1.33 );
-	Triangle triangle2 ( Vec ( -1.30, -1.2, -0.21 ), Vec ( 2.99, -1.2, 9.79 ), Vec ( -1.30, -1.2, 9.79 ), Color ( 1, 0, 0 ), Illumination ( 0.5, 0.7, 0.3, 0.0, 0.0, Color ( 1, 0, 0 ), Color ( 0.94, 0.87, 0.38 ) ), 1.33 );
-	Plane plane ( Vec ( -1, 0, 0 ), Vec ( 4, 4, 5 ), Color ( 0, 0, 1 ), Illumination ( 0.5, 0.7, 0.3, 0.0, 0.0, Color ( 1, 0, 0 ), Color ( 0.94, 0.87, 0.38 ) ) );
+	Sphere sphere( Vec( 0, 0.03, 1.59 ), 0.69, Color( 0.9, 0.9, 0.9 ), Illumination( 0.1, 0.7, 0.3, 0, 0.7 ), 1.05 );
+	Sphere sphere1( Vec( 0.95, -0.33, 3 ), 1, Color( 0.1, 1, 0.1 ), Illumination( 0.1, 0.7, 0.3, 0.7, 0.0 ), 1.45 );
+	Triangle triangle1( Vec( -1.30, -1.2, -0.21 ), Vec( 2.99, -1.2, -0.21 ), Vec( 2.99, -1.2, 9.79 ), Color( 1, 0, 0 ), Illumination( 0.5, 0.7, 0.3, 0.0, 0.0, Color( 1, 0, 0 ), Color( 0.94, 0.87, 0.38 ) ), 1.33 );
+	Triangle triangle2( Vec( -1.30, -1.2, -0.21 ), Vec( 2.99, -1.2, 9.79 ), Vec( -1.30, -1.2, 9.79 ), Color( 1, 0, 0 ), Illumination( 0.5, 0.7, 0.3, 0.0, 0.0, Color( 1, 0, 0 ), Color( 0.94, 0.87, 0.38 ) ), 1.33 );
+	Plane plane( Vec( -1, 0, 0 ), Vec( 4, 4, 5 ), Color( 0, 0, 1 ), Illumination( 0.5, 0.7, 0.3, 0.0, 0.0, Color( 1, 0, 0 ), Color( 0.94, 0.87, 0.38 ) ) );
 
 	objects[0] = &sphere;
 	objects[1] = &sphere1;
@@ -261,30 +261,30 @@ int main ()
 	double d = 1.0;
 
 	//projection plane
-	ViewingPlane view ( camera, d, worldWidth, worldHeight );
+	ViewingPlane view( camera, d, worldWidth, worldHeight );
 
 	// Game loop for one frame
 	for ( int i = 0; i < pixelWidth; i++ )
 	{
 		for ( int j = 0; j < pixelHeight; j++ )
 		{
-			Vec origin = camera.getPosition ();
-			Vec dir = view.getPlanePoint ( camera, i, j, dx, dy ).subtract ( origin );
-			dir = dir.normalize ();
-			Ray r ( origin, dir, ni );
+			Vec origin = camera.getPosition();
+			Vec dir = view.getPlanePoint( camera, i, j, dx, dy ).subtract( origin );
+			dir = dir.normalize();
+			Ray r( origin, dir, ni );
 
 			thisone = j*pixelWidth + i;
 			insideSphere = false;
 
-			Color finalTemp = illuminate ( r, 0 );
-			pixels[thisone].r = finalTemp.getRed ();
-			pixels[thisone].g = finalTemp.getGreen ();
-			pixels[thisone].b = finalTemp.getBlue ();
+			Color finalTemp = illuminate( r, 0 );
+			pixels[thisone].r = finalTemp.getRed();
+			pixels[thisone].g = finalTemp.getGreen();
+			pixels[thisone].b = finalTemp.getBlue();
 		}
 	}
 
-	createBMP ( "Output.bmp", pixelWidth, pixelHeight, dpi, pixels );
+	createBMP( "Output.bmp", pixelWidth, pixelHeight, dpi, pixels );
 	ifstream file;
-	file.open ( "Output.bmp" );
+	file.open( "Output.bmp" );
 	return 0;
 }

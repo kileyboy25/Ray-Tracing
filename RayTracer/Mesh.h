@@ -9,9 +9,9 @@ public:
 	Vec V;
 
 
-	Mesh ( double a, double b, double c )
+	Mesh( double a, double b, double c )
 	{
-		V = Vec ( a, b, c );
+		V = Vec( a, b, c );
 	}
 };
 
