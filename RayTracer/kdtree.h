@@ -19,9 +19,12 @@ public:
 	bool leaf;
 public:
 	kdtree ();
+	// Accessors and Mutators
 	vector<Object*> getObjects ();
 	void setObjects ( vector<Object*> );
+	// Build is used to create bounding boxes for a given vector of objects
 	void build ( vector<Object*>, int );
+	// Traverses through each leaf node of the tree to get the vector of objects contained in that leaf
 	vector<Object*> traverse ( kdtree*, Ray );
 	//void createFaces();
 };

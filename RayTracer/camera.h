@@ -9,8 +9,11 @@ private:
 	Vec look_at, position, up;
 	Vec cameraN, cameraU, cameraV;
 public:
+	// Constructor calculates camera u,v and n based on the look_at, position
+	// and up set in the constructor.
 	Camera ();
 	Camera ( Vec, Vec, Vec );
+	// Accessors
 	Vec getLookat ();
 	Vec getPosition ();
 	Vec getCameraN ();

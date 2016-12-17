@@ -8,8 +8,11 @@ private:
 public:
 	BoundingBox ();
 	BoundingBox ( Vec, Vec );
+	// Accessors
 	Vec getMin ();
 	Vec getMax ();
+	// Expand the bounding box using the bounding box provided 
+	//as a parameter. Used during construction of the tree.
 	BoundingBox expand ( BoundingBox );
 };
 

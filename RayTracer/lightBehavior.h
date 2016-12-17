@@ -7,6 +7,8 @@
 //inside object
 bool insideSphere = false;
 
+// Spawns a relfective ray from the given Vec POI and the normal
+// at that point.
 Ray reflect ( Ray r, Vec normal, Vec POI )
 {
 	double dotRS = 2 * r.getDirection ().dotProduct ( normal );
@@ -15,6 +17,8 @@ Ray reflect ( Ray r, Vec normal, Vec POI )
 	return Ray ( POI, dir, r.getRefractive () );
 }
 
+// Spaws and returns a transmissive ray from the given POI, normal and transmissive properties 
+// of the object
 Ray transmit ( Ray r, Vec normal, double nt, Vec PoI )
 {
 	double ratio;

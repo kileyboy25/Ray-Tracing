@@ -42,6 +42,11 @@ double ni = 1.0;
 //tree for traversal
 kdtree* tree = new kdtree ();
 
+// This method recursively finds the best Color for a given object. At each level of the recursive call,
+// a reflective and a transmissive ray is spawned. The color is decided using phong's model of illumunation.
+// Phong constants are defined in each object as a field in the illumination object.
+// 
+// The MAX_DEPTH is used to prune the tree.
 Color illuminate ( Ray r, int depth )
 {
 	double mintersection = INT_MAX;
@@ -257,16 +262,13 @@ int main ()
 
 	//projection plane
 	ViewingPlane view ( camera, d, worldWidth, worldHeight );
-	std::cout << "PlaneStart value: " << view.getPlaneStart ().getX () << " " << view.getPlaneStart ().getY () << " " << view.getPlaneStart ().getZ () << std::endl;
-	std::cout << "PlanePoint value: " << view.getPlanePoint ( Camera ( Vec ( 0, 0, 0 ), Vec ( 0, 0, -1 ), Vec ( 0, 1, 0 ) ), 0, 0, 0.1, 0.1 ).getX () << " " << view.getPlanePoint ( camera, 0, 0, dx, dy ).getY () << " " << view.getPlanePoint ( camera, 0, 0, dx, dy ).getZ () << std::endl;
-	cout << "Origin: " << camera.getPosition ().getX () << " " << camera.getPosition ().getX () << " " << camera.getPosition ().getX () << endl;
-	cout << "dx " << dx << " dy " << dy;
+
+	// Game loop for one frame
 	for ( int i = 0; i < pixelWidth; i++ )
 	{
 		for ( int j = 0; j < pixelHeight; j++ )
 		{
 			Vec origin = camera.getPosition ();
-			//std::cout << "PlanePoint value: " << view.getPlanePoint(camera, i, j, dx, dy).getX() << " " << view.getPlanePoint(camera, i, j, dx, dy).getY() << " " << view.getPlanePoint(camera, i, j, dx, dy).getZ() << std::endl;
 			Vec dir = view.getPlanePoint ( camera, i, j, dx, dy ).subtract ( origin );
 			dir = dir.normalize ();
 			Ray r ( origin, dir, ni );

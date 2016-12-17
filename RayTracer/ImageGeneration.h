@@ -3,6 +3,7 @@
 #include<iostream>
 #include<fstream>
 
+// This struct is only used for image generation.
 struct RGB
 {
 	double r;
@@ -10,24 +11,23 @@ struct RGB
 	double b;
 };
 
-//Tone reproduction
-int TRmodel = 2;
-//ward
-double Lwa = 0.0;
-double delta = 0.001;
-int Lmax = 1;
-int Ldmax = 100;
-
-//reinhard
-double a = 0.18;
-
-//Adaptive Logarithmic
-double Lwmax;
-double b = 0.85;
-
-
 void createBMP ( const char *filename, int w, int h, int dpi, RGB *data )
 {
+	//Tone reproduction
+	int TRmodel = 2;
+	//ward
+	double Lwa = 0.0;
+	double delta = 0.001;
+	int Lmax = 1;
+	int Ldmax = 100;
+
+	//reinhard
+	double a = 0.18;
+
+	//Adaptive Logarithmic
+	double Lwmax;
+	double b = 0.85;
+
 	FILE *f;
 	int k = w*h;
 	int s = 4 * k;

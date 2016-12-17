@@ -10,6 +10,7 @@ private:
 public:
 	Color ();
 	Color ( double, double, double );
+	// Accessors and Mutators
 	double getRed ();
 	double getBlue ();
 	double getGreen ();

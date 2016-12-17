@@ -12,6 +12,7 @@ public:
 	Illumination ();
 	Illumination ( double, double, double, double, double );
 	Illumination ( double, double, double, double, double, Color, Color );
+	// Accessors and Mutators
 	double getka ();
 	double getkd ();
 	double getks ();

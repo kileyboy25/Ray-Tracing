@@ -14,6 +14,7 @@ private:
 public:
 	Light ();
 	Light ( Vec, Color );
+	// Accessors
 	Vec getPosition ();
 	Color getColor ();
 };
