@@ -6,32 +6,37 @@
 
 #include <math.h>
 
-class Light{
+class Light
+{
 private:
 	Vec position;
 	Color color;
 public:
-	Light();
-	Light(Vec, Color);
-	Vec getPosition();
-	Color getColor();
+	Light ();
+	Light ( Vec, Color );
+	Vec getPosition ();
+	Color getColor ();
 };
 
-Light::Light(){
-	position = Vec(0, 0, 0);
-	color = Color(0,0,1);
+Light::Light ()
+{
+	position = Vec ( 0, 0, 0 );
+	color = Color ( 0, 0, 1 );
 }
 
-Light::Light(Vec p, Color c){
+Light::Light ( Vec p, Color c )
+{
 	position = p;
 	color = c;
 }
 
-Color Light::getColor(){
+Color Light::getColor ()
+{
 	return color;
 }
 
-Vec Light::getPosition(){
+Vec Light::getPosition ()
+{
 	return position;
 }
 

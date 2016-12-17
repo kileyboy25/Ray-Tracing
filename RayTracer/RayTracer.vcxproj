@@ -86,7 +86,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RayTracer.cpp" />
-    <ClCompile Include="viewing_plane.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
